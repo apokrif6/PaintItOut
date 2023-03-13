@@ -25,4 +25,9 @@ protected:
 	TSubclassOf<APaintBaseProjectile> Projectile;
 	
 	virtual void BeginPlay() override;
+
+private:
+	FName MuzzleSocketName = "Muzzle";
+
+	FVector GetMuzzleWorldLocation() const;
 };

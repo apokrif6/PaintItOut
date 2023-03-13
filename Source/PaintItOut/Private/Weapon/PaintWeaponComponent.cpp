@@ -3,16 +3,25 @@
 
 #include "Weapon/PaintWeaponComponent.h"
 #include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
 
 UPaintWeaponComponent::UPaintWeaponComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UPaintWeaponComponent::AttachWeaponToPlayer(USceneComponent* AttachTo)
+void UPaintWeaponComponent::AttachWeaponToPlayer(USceneComponent* AttachTo) const
 {
 	Weapon->AttachToComponent(AttachTo, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true),
 	                          GripPointSocketName);
+}
+
+void UPaintWeaponComponent::OnFire()
+{
+	Weapon->Fire();
+
+	PlayFireSound();
+	PlayFireAnimation();
 }
 
 void UPaintWeaponComponent::BeginPlay()
@@ -38,4 +47,25 @@ void UPaintWeaponComponent::SpawnWeapon()
 
 	const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
 	Weapon->AttachToComponent(Character->GetMesh(), AttachmentRules, GripPointSocketName);
+}
+
+void UPaintWeaponComponent::PlayFireSound()
+{
+	USoundBase* FireSound = FireData.FireSound;
+	if (!FireSound) return;
+
+	UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetOwner()->GetActorLocation());
+}
+
+void UPaintWeaponComponent::PlayFireAnimation()
+{
+	UAnimMontage* FireAnimation = FireData.FireAnimation;
+	if (!FireAnimation) return;
+
+	ACharacter* WeaponOwner = Cast<ACharacter>(GetOwner());
+	if (!WeaponOwner) return;
+
+	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, WeaponOwner->GetName());
+
+	WeaponOwner->PlayAnimMontage(FireAnimation);
 }

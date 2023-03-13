@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "PaintItOutCharacter.h"
-#include "PaintItOutProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -65,7 +64,7 @@ void APaintItOutCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
-	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &APaintItOutCharacter::OnFire);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &UPaintWeaponComponent::OnFire);
 
 	// Bind movement events
 	PlayerInputComponent->BindAxis("MoveForward", this, &APaintItOutCharacter::MoveForward);
@@ -78,46 +77,6 @@ void APaintItOutCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAxis("TurnRate", this, &APaintItOutCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &APaintItOutCharacter::LookUpAtRate);
-}
-
-void APaintItOutCharacter::OnFire()
-{
-	// try and fire a projectile
-	if (ProjectileClass != nullptr)
-	{
-		UWorld* const World = GetWorld();
-		if (World != nullptr)
-		{
-			const FRotator SpawnRotation = GetControlRotation();
-			// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-			const FVector SpawnLocation = ((FP_MuzzleLocation != nullptr) ? FP_MuzzleLocation->GetComponentLocation() : GetActorLocation()) + SpawnRotation.RotateVector(GunOffset);
-
-			//Set Spawn Collision Handling Override
-			FActorSpawnParameters ActorSpawnParams;
-			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
-			// spawn the projectile at the muzzle
-			World->SpawnActor<APaintItOutProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
-			
-		}
-	}
-
-	// try and play the sound if specified
-	if (FireSound != nullptr)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-	}
-
-	// try and play a firing animation if specified
-	if (FireAnimation != nullptr)
-	{
-		// Get the animation object for the arms mesh
-		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-		if (AnimInstance != nullptr)
-		{
-			AnimInstance->Montage_Play(FireAnimation, 1.f);
-		}
-	}
 }
 
 void APaintItOutCharacter::MoveForward(float Value)
