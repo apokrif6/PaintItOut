@@ -8,8 +8,8 @@ APaintWeapon::APaintWeapon()
 	PrimaryActorTick.bCanEverTick = false;
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
-	//TODO
-	//Multiplayer features
+	Mesh->CastShadow = false;
+	Mesh->bCastDynamicShadow = false;
 	SetRootComponent(Mesh);
 }
 
