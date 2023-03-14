@@ -6,6 +6,7 @@
 #include "Components/DecalComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetMaterialLibrary.h"
 
 APaintBaseProjectile::APaintBaseProjectile()
 {
@@ -54,11 +55,16 @@ void APaintBaseProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 
 void APaintBaseProjectile::SpawnPaintBlobDecal(UPrimitiveComponent* ComponentToAttach, const FHitResult& Hit) const
 {
+	//TODO
+	//Move to fabric method in game mode class
+	UMaterialInstanceDynamic* DynamicPaintBlobMaterial = UKismetMaterialLibrary::CreateDynamicMaterialInstance(0, PaintBlobDecalMaterial);
+	DynamicPaintBlobMaterial->SetVectorParameterValue("Color", FLinearColor::MakeRandomColor());
+	
 	const FVector DecalSize = FVector{-30.f, GetPaintBlobRandomSideSize(), GetPaintBlobRandomSideSize()};
 	const FRotator HitRotator = UKismetMathLibrary::MakeRotFromX(Hit.Normal);
 
 	UDecalComponent* PaintBlobDecal = UGameplayStatics::SpawnDecalAttached(
-		PaintBlobDecalMaterial, DecalSize, ComponentToAttach, NAME_None, GetActorLocation(), HitRotator,
+		DynamicPaintBlobMaterial, DecalSize, ComponentToAttach, NAME_None, GetActorLocation(), HitRotator,
 		EAttachLocation::KeepWorldPosition);
 	PaintBlobDecal->AddRelativeRotation(FRotator{0.0f, 0.0f, GetPaintBlobRandomRelativeLocation()});
 }
