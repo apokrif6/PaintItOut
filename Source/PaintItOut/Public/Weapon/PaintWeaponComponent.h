@@ -49,7 +49,7 @@ private:
 
 	void SpawnWeapon();
 
-	void PlayFireSound();
+	void PlayFireSound() const;
 
-	void PlayFireAnimation();
+	void PlayFireAnimation() const;
 };

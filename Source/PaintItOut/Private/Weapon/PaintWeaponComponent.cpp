@@ -4,6 +4,7 @@
 #include "Weapon/PaintWeaponComponent.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
+#include "PaintItOut/PaintItOutCharacter.h"
 
 UPaintWeaponComponent::UPaintWeaponComponent()
 {
@@ -49,7 +50,7 @@ void UPaintWeaponComponent::SpawnWeapon()
 	Weapon->AttachToComponent(Character->GetMesh(), AttachmentRules, GripPointSocketName);
 }
 
-void UPaintWeaponComponent::PlayFireSound()
+void UPaintWeaponComponent::PlayFireSound() const
 {
 	USoundBase* FireSound = FireData.FireSound;
 	if (!FireSound) return;
@@ -57,15 +58,16 @@ void UPaintWeaponComponent::PlayFireSound()
 	UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetOwner()->GetActorLocation());
 }
 
-void UPaintWeaponComponent::PlayFireAnimation()
+void UPaintWeaponComponent::PlayFireAnimation() const
 {
 	UAnimMontage* FireAnimation = FireData.FireAnimation;
 	if (!FireAnimation) return;
 
-	ACharacter* WeaponOwner = Cast<ACharacter>(GetOwner());
+	const APaintItOutCharacter* WeaponOwner = Cast<APaintItOutCharacter>(GetOwner());
 	if (!WeaponOwner) return;
 
-	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, WeaponOwner->GetName());
+	UAnimInstance* AnimInstance = WeaponOwner->GetMesh1P()->GetAnimInstance();
+	if (!AnimInstance) return;
 
-	WeaponOwner->PlayAnimMontage(FireAnimation);
+	AnimInstance->Montage_Play(FireAnimation);
 }
