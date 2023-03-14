@@ -3,6 +3,10 @@
 
 #include "Weapon/Projectiles/PaintBaseProjectile.h"
 
+#include "Components/DecalComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
+
 APaintBaseProjectile::APaintBaseProjectile()
 {
 	PrimaryActorTick.bCanEverTick = false;
@@ -37,11 +41,34 @@ void APaintBaseProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 	if (!OtherActor
 		|| OtherActor == this
 		|| !OtherComp
-		|| !OtherComp->IsSimulatingPhysics()
 	)
 		return;
 
-	OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
+	if (OtherComp->IsSimulatingPhysics())
+		OtherComp->AddImpulseAtLocation(GetVelocity() * 25.0f, GetActorLocation());
+
+	SpawnPaintBlobDecal(OtherComp, Hit);
 
 	Destroy();
+}
+
+void APaintBaseProjectile::SpawnPaintBlobDecal(UPrimitiveComponent* ComponentToAttach, const FHitResult& Hit) const
+{
+	const FVector DecalSize = FVector{-30.f, GetPaintBlobRandomSideSize(), GetPaintBlobRandomSideSize()};
+	const FRotator HitRotator = UKismetMathLibrary::MakeRotFromX(Hit.Normal);
+
+	UDecalComponent* PaintBlobDecal = UGameplayStatics::SpawnDecalAttached(
+		PaintBlobDecalMaterial, DecalSize, ComponentToAttach, NAME_None, GetActorLocation(), HitRotator,
+		EAttachLocation::KeepWorldPosition);
+	PaintBlobDecal->AddRelativeRotation(FRotator{0.0f, 0.0f, GetPaintBlobRandomRelativeLocation()});
+}
+
+float APaintBaseProjectile::GetPaintBlobRandomSideSize() const
+{
+	return UKismetMathLibrary::RandomFloatInRange(PaintBlobSideSizeInterval.Min, PaintBlobSideSizeInterval.Max);
+}
+
+float APaintBaseProjectile::GetPaintBlobRandomRelativeLocation() const
+{
+	return UKismetMathLibrary::RandomFloatInRange(0.0f, 360.0f);
 }

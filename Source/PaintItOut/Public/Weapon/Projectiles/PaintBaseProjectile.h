@@ -23,6 +23,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Projectile)
 	UProjectileMovementComponent* ProjectileMovement;
 
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	UMaterialInterface* PaintBlobDecalMaterial;
+
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	FFloatInterval PaintBlobSideSizeInterval = FFloatInterval{75.0f, 100.0f};
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Projectile)
 	FColor Color = FColor::Yellow;
 
@@ -35,4 +41,10 @@ private:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse,
 	           const FHitResult& Hit);
+
+	void SpawnPaintBlobDecal(UPrimitiveComponent* ComponentToAttach, const FHitResult& Hit) const;
+
+	float GetPaintBlobRandomSideSize() const;
+
+	float GetPaintBlobRandomRelativeLocation() const;
 };

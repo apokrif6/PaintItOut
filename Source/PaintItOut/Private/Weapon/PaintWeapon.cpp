@@ -28,11 +28,6 @@ FVector APaintWeapon::GetMuzzleWorldLocation() const
 
 void APaintWeapon::Fire() const
 {
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, "Fire");
-	}
-
 	if (!Projectile) return;
 
 	UWorld* World = GetWorld();
