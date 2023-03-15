@@ -11,8 +11,8 @@ UCLASS()
 class PAINTITOUT_API APaintWeapon : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	APaintWeapon();
 
 	void Fire() const;
@@ -23,11 +23,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Weapon)
 	TSubclassOf<APaintBaseProjectile> Projectile;
-	
+
 	virtual void BeginPlay() override;
 
 private:
 	FName MuzzleSocketName = "Muzzle";
 
 	FVector GetMuzzleWorldLocation() const;
+
+	void SetProjectileTeamColor() const;
 };

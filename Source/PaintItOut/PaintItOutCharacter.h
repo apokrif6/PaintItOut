@@ -60,6 +60,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Weapon)
 	UPaintWeaponComponent* WeaponComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Projectile)
+	FColor TeamColor;
+	
 	/** Handles moving forward/backward */
 	void MoveForward(float Val);
 
@@ -84,8 +87,12 @@ protected:
 	// End of APawn interface
 
 public:
-	/** Returns Mesh1P subobject **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
-	/** Returns FirstPersonCameraComponent subobject **/
+
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+
+	FColor GetTeamColor() const { return TeamColor; }
+
+private:
+	void SetTeamColor(FColor Color);
 };

@@ -13,7 +13,10 @@ APaintWeapon::APaintWeapon()
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
 	Mesh->CastShadow = false;
 	Mesh->bCastDynamicShadow = false;
+
 	SetRootComponent(Mesh);
+
+	SetProjectileTeamColor();
 }
 
 void APaintWeapon::BeginPlay()
@@ -42,4 +45,13 @@ void APaintWeapon::Fire() const
 		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
 	World->SpawnActor<APaintBaseProjectile>(Projectile, SpawnLocation, SpawnRotation, ProjectileSpawnParams);
+}
+
+void APaintWeapon::SetProjectileTeamColor() const
+{
+	const APaintItOutCharacter* Character = Cast<APaintItOutCharacter>(
+		UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (!Character) return;
+
+	APaintBaseProjectile::SetProjectileColor(Character->GetTeamColor());
 }

@@ -7,6 +7,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetMaterialLibrary.h"
+#include "PaintItOut/PaintItOutCharacter.h"
+
+FColor APaintBaseProjectile::Color;
 
 APaintBaseProjectile::APaintBaseProjectile()
 {
@@ -55,11 +58,10 @@ void APaintBaseProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActo
 
 void APaintBaseProjectile::SpawnPaintBlobDecal(UPrimitiveComponent* ComponentToAttach, const FHitResult& Hit) const
 {
-	//TODO
-	//Move to fabric method in game mode class
-	UMaterialInstanceDynamic* DynamicPaintBlobMaterial = UKismetMaterialLibrary::CreateDynamicMaterialInstance(0, PaintBlobDecalMaterial);
-	DynamicPaintBlobMaterial->SetVectorParameterValue("Color", FLinearColor::MakeRandomColor());
-	
+	UMaterialInstanceDynamic* DynamicPaintBlobMaterial = UKismetMaterialLibrary::CreateDynamicMaterialInstance(
+		nullptr, PaintBlobDecalMaterial);
+	DynamicPaintBlobMaterial->SetVectorParameterValue("Color", Color);
+
 	const FVector DecalSize = FVector{-30.f, GetPaintBlobRandomSideSize(), GetPaintBlobRandomSideSize()};
 	const FRotator HitRotator = UKismetMathLibrary::MakeRotFromX(Hit.Normal);
 
@@ -77,4 +79,9 @@ float APaintBaseProjectile::GetPaintBlobRandomSideSize() const
 float APaintBaseProjectile::GetPaintBlobRandomRelativeLocation() const
 {
 	return UKismetMathLibrary::RandomFloatInRange(0.0f, 360.0f);
+}
+
+void APaintBaseProjectile::SetProjectileColor(FColor ProjectileColor)
+{
+	Color = ProjectileColor;
 }

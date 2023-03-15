@@ -16,6 +16,8 @@ class PAINTITOUT_API APaintBaseProjectile : public AActor
 public:
 	APaintBaseProjectile();
 
+	static void SetProjectileColor(FColor Color);
+
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
 	USphereComponent* Collision;
@@ -28,9 +30,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = Projectile)
 	FFloatInterval PaintBlobSideSizeInterval = FFloatInterval{75.0f, 100.0f};
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Projectile)
-	FColor Color = FColor::Yellow;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Projectile, Meta = (ClampMin = 1.0f))
 	float ProjectileLifeSpan = 3.0f;
@@ -47,4 +46,6 @@ private:
 	float GetPaintBlobRandomSideSize() const;
 
 	float GetPaintBlobRandomRelativeLocation() const;
+
+	static FColor Color;
 };

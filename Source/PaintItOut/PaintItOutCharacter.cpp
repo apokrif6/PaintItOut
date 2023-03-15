@@ -41,6 +41,8 @@ APaintItOutCharacter::APaintItOutCharacter()
 	Mesh1P->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
 
 	WeaponComponent = CreateDefaultSubobject<UPaintWeaponComponent>("WeaponComponent");
+
+	//SetTeamColor(FColor::Purple);
 	//GunOffset = FVector(100.0f, 0.0f, 10.0f);
 }
 
@@ -77,6 +79,11 @@ void APaintItOutCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAxis("TurnRate", this, &APaintItOutCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &APaintItOutCharacter::LookUpAtRate);
+}
+
+void APaintItOutCharacter::SetTeamColor(FColor Color)
+{
+	TeamColor = Color;
 }
 
 void APaintItOutCharacter::MoveForward(float Value)
