@@ -52,4 +52,6 @@ private:
 	void PlayFireSound() const;
 
 	void PlayFireAnimation() const;
+
+	void SetTeamColorForMaterials() const;
 };

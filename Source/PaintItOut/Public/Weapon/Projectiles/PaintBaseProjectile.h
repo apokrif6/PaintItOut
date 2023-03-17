@@ -48,4 +48,6 @@ private:
 	float GetPaintBlobRandomRelativeLocation() const;
 
 	static FColor Color;
+
+	const FName BlobMaterialColorParamName = "Color";
 };

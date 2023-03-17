@@ -2,7 +2,6 @@
 
 
 #include "Weapon/Projectiles/PaintBaseProjectile.h"
-
 #include "Components/DecalComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -60,7 +59,7 @@ void APaintBaseProjectile::SpawnPaintBlobDecal(UPrimitiveComponent* ComponentToA
 {
 	UMaterialInstanceDynamic* DynamicPaintBlobMaterial = UKismetMaterialLibrary::CreateDynamicMaterialInstance(
 		nullptr, PaintBlobDecalMaterial);
-	DynamicPaintBlobMaterial->SetVectorParameterValue("Color", Color);
+	DynamicPaintBlobMaterial->SetVectorParameterValue(BlobMaterialColorParamName, Color);
 
 	const FVector DecalSize = FVector{-30.f, GetPaintBlobRandomSideSize(), GetPaintBlobRandomSideSize()};
 	const FRotator HitRotator = UKismetMathLibrary::MakeRotFromX(Hit.Normal);

@@ -30,6 +30,8 @@ void UPaintWeaponComponent::BeginPlay()
 	Super::BeginPlay();
 
 	SpawnWeapon();
+
+	SetTeamColorForMaterials();
 }
 
 void UPaintWeaponComponent::SpawnWeapon()
@@ -70,4 +72,14 @@ void UPaintWeaponComponent::PlayFireAnimation() const
 	if (!AnimInstance) return;
 
 	AnimInstance->Montage_Play(FireAnimation);
+}
+
+void UPaintWeaponComponent::SetTeamColorForMaterials() const
+{
+	const APaintItOutCharacter* WeaponOwner = Cast<APaintItOutCharacter>(GetOwner());
+	if (!WeaponOwner) return;
+
+	Weapon->SetWeaponTeamColor(WeaponOwner->GetTeamColor());
+
+	APaintBaseProjectile::SetProjectileColor(WeaponOwner->GetTeamColor());
 }

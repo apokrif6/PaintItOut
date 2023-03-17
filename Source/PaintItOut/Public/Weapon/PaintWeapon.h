@@ -17,6 +17,8 @@ public:
 
 	void Fire() const;
 
+	void SetWeaponTeamColor(FColor Color) const;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Weapon)
 	USkeletalMeshComponent* Mesh;
@@ -31,5 +33,5 @@ private:
 
 	FVector GetMuzzleWorldLocation() const;
 
-	void SetProjectileTeamColor() const;
+	const FName WeaponMaterialColorParamName = "BodyColor";
 };

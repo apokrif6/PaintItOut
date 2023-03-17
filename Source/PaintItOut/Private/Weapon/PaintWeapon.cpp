@@ -4,6 +4,7 @@
 #include "Weapon/PaintWeapon.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMaterialLibrary.h"
 #include "PaintItOut/PaintItOutCharacter.h"
 
 APaintWeapon::APaintWeapon()
@@ -15,8 +16,6 @@ APaintWeapon::APaintWeapon()
 	Mesh->bCastDynamicShadow = false;
 
 	SetRootComponent(Mesh);
-
-	SetProjectileTeamColor();
 }
 
 void APaintWeapon::BeginPlay()
@@ -47,11 +46,13 @@ void APaintWeapon::Fire() const
 	World->SpawnActor<APaintBaseProjectile>(Projectile, SpawnLocation, SpawnRotation, ProjectileSpawnParams);
 }
 
-void APaintWeapon::SetProjectileTeamColor() const
+void APaintWeapon::SetWeaponTeamColor(FColor Color) const
 {
-	const APaintItOutCharacter* Character = Cast<APaintItOutCharacter>(
-		UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	if (!Character) return;
+	UMaterialInterface* WeaponMaterial = Mesh->GetMaterial(0);
 
-	APaintBaseProjectile::SetProjectileColor(Character->GetTeamColor());
+	UMaterialInstanceDynamic* DynamicWeaponMeshMaterial = UKismetMaterialLibrary::CreateDynamicMaterialInstance(
+		nullptr, WeaponMaterial);
+	DynamicWeaponMeshMaterial->SetVectorParameterValue(WeaponMaterialColorParamName, Color);
+
+	Mesh->SetMaterial(0, DynamicWeaponMeshMaterial);
 }
