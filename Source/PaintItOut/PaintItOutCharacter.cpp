@@ -48,6 +48,10 @@ void APaintItOutCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	WeaponComponent->AttachWeaponToPlayer(Mesh1P);
+
+	const auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+
+	PlayerController->SetInputMode(FInputModeGameOnly());
 }
 
 //////////////////////////////////////////////////////////////////////////
