@@ -79,6 +79,10 @@ void UPaintWeaponComponent::SetTeamColorForMaterials() const
 	const APaintItOutCharacter* WeaponOwner = Cast<APaintItOutCharacter>(GetOwner());
 	if (!WeaponOwner) return;
 
+	if (!GEngine) return;
+
+	GEngine->AddOnScreenDebugMessage(-3, 1, FColor::Red, WeaponOwner->GetTeamColor().ToString());
+	
 	Weapon->SetWeaponTeamColor(WeaponOwner->GetTeamColor());
 
 	APaintBaseProjectile::SetProjectileColor(WeaponOwner->GetTeamColor());

@@ -9,6 +9,7 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
+#include "PaintItOutGameInstance.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -39,6 +40,8 @@ APaintItOutCharacter::APaintItOutCharacter()
 	Mesh1P->CastShadow = false;
 	Mesh1P->SetRelativeRotation(FRotator(1.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-0.5f, -4.4f, -155.7f));
+
+	SetTeamColor();
 
 	WeaponComponent = CreateDefaultSubobject<UPaintWeaponComponent>("WeaponComponent");
 }
@@ -82,8 +85,15 @@ void APaintItOutCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAxis("LookUpRate", this, &APaintItOutCharacter::LookUpAtRate);
 }
 
-void APaintItOutCharacter::SetTeamColor(FColor Color)
+void APaintItOutCharacter::SetTeamColor()
 {
+	const auto World = GetWorld();
+	if (!World) return;
+
+	const auto PaintItOutGameInstance = World->GetGameInstance<UPaintItOutGameInstance>();
+
+	const auto Color = PaintItOutGameInstance->GetSelectedTeamColorData().Color;
+
 	TeamColor = Color;
 }
 

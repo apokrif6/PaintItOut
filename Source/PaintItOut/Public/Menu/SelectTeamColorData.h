@@ -8,7 +8,13 @@ struct FSelectTeamColorData
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Color)
-	FColor TeamColor;
+	FColor Color;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Color)
+	UTexture2D* Texture;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Color)
+	FName Name;
 };
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnTeamColorSelectedSignature, const FSelectTeamColorData&)

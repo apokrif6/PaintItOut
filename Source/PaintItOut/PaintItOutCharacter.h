@@ -60,9 +60,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Weapon)
 	UPaintWeaponComponent* WeaponComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Projectile)
-	FColor TeamColor;
-	
 	/** Handles moving forward/backward */
 	void MoveForward(float Val);
 
@@ -94,5 +91,7 @@ public:
 	FColor GetTeamColor() const { return TeamColor; }
 
 private:
-	void SetTeamColor(FColor Color);
+	void SetTeamColor();
+
+	FColor TeamColor;
 };
