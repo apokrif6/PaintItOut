@@ -81,8 +81,6 @@ void UPaintWeaponComponent::SetTeamColorForMaterials() const
 
 	if (!GEngine) return;
 
-	GEngine->AddOnScreenDebugMessage(-3, 1, FColor::Red, WeaponOwner->GetTeamColor().ToString());
-	
 	Weapon->SetWeaponTeamColor(WeaponOwner->GetTeamColor());
 
 	APaintBaseProjectile::SetProjectileColor(WeaponOwner->GetTeamColor());

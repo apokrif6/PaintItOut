@@ -37,6 +37,8 @@ void UMenuUserWidget::InitTeamColorItems()
 
 		TeamColorItemWidgets.Add(TeamColorWidget);
 	}
+
+	OnTeamColorSelected(PaintItOutGameInstance->GetTeamColorsData()[0]);
 }
 
 void UMenuUserWidget::OnTeamColorSelected(const FSelectTeamColorData& Data)
