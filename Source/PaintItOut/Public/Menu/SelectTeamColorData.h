@@ -9,9 +9,6 @@ struct FSelectTeamColorData
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Color)
 	FColor Color;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Color)
-	UTexture2D* Texture;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = Color)
 	FName Name;

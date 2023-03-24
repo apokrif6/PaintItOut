@@ -23,7 +23,7 @@ void USelectTeamColorItemWidget::SetTeamColorData(const FSelectTeamColorData& Da
 
 	if (TeamColorImage)
 	{
-		TeamColorImage->SetBrushFromTexture(TeamColorData.Texture);
+		TeamColorImage->SetColorAndOpacity(TeamColorData.Color.WithAlpha(255));
 	}
 }
 
