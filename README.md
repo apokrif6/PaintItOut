@@ -1,6 +1,6 @@
 # PaintItOut
 
-<3> FPP shooter prototype with gun which shoot colored ink
+<h3> FPP shooter prototype with gun which shoot colored ink
 
 Features:
 - Select color menu
